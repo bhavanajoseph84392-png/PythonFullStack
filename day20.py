@@ -96,6 +96,25 @@ Data Abstraction:-
 -->This is the process of hiding internal implementation details and showing only the essential features to the user
 -->It focuses on an object rather than how it does it.
 
+from abc import ABC,abstractmethod
+class shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+    def perimeters(self):
+        pass
+class Rec(shape):
+    def __init__(self,a,b):
+        self.a  = a
+        self.b  = b
+    def area(self):
+        return self.a * self.b
+    def perimeters(self):
+        return  2*(self.a*self.b)
+an = Rec(10,5)
+print(an.area())
+
+
 '''
 
 from abc import ABC,abstractmethod
