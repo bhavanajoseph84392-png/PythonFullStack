@@ -90,115 +90,23 @@ print("Days:", days_left)
 '''
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                                                          28/05/2026
 
-
-def is_palindrome(s):
-    s = s.lower().replace(" ", "")
-    return s == s[::-1]
-
-
-
-def reverse_string(s):
-    return s[::-1]
+def (area):
+    A = 20
+    B = 30
+    print(area)
+print()
 
 
 
-def concatenate_names(names):
-    return " ".join(names)
-
-def is_pangram(s):
-    s = s.lower()
-    return all(letter in s for letter in string.ascii_lowercase)
-
-
-                                                             29/05/2026
-def circle_properties(radius):
-    area = math.pi * radius ** 2
-    circumference = 2 * math.pi * radius
-    return round(area, 4), round(circumference, 4)
-
-
-def convert_minutes(total_minutes):
-    hours = total_minutes // 60
-    minutes = total_minutes % 60
-    return hours, minutes
-                                                          30/05/2026
-
-
-def count_vowels(s):
-    return sum(1 for ch in s.lower() if ch in "aeiou")
-
-
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
-                                                        31/05/2026
-
-
-def is_leap_year(year):
-    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
-
-def get_even_numbers(numbers):
-    return [n for n in numbers if n % 2 == 0]
 
 
 
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(math.sqrt(n)) + 1):
-        if n % i == 0:
-            return False
-    return True
-                                                      1/06/2026
-
-
-def fibonacci(n):
-    if n <= 0:
-        return []
-    elif n == 1:
-        return [0]
-    sequence = [0, 1]
-    for _ in range(2, n):
-        sequence.append(sequence[-1] + sequence[-2])
-    return sequence
-
-
-def names_starting_with_a(names):
-    return [name for name in names if name.strip().upper().startswith('A')]
 
 
 
-def multiplication_table(n, up_to=10):
-    table = []
-    for i in range(1, up_to + 1):
-        table.append((i, n * i))
-    return table
 
 
-
-def factorial(n):
-    if n < 0:
-        raise ValueError("Factorial is not defined for negative numbers.")
-    if n == 0 or n == 1:
-        return 1
-    result = 1
-    for i in range(2, n + 1):
-        result *= i
-    return result
-
-
-def primes_up_to_50():
-    return [n for n in range(1, 51) if is_prime(n)]
-
-
-def count_long_words(words):
-    return sum(1 for word in words if len(word) > 5)
 
 
 
