@@ -1,0 +1,69 @@
+DAY -2
+========
+what is data ,field, record, database?(IQ)
+--------------------------------------------
+what is data?
+-----------
+raw facts or figures without context.
+example:101,Ravi,50000,hyd
+what is filed?
+----------------
+smallest unit of data in a database(column/attribute)
+what is record?
+-----------------
+collection of related fields(row/tuple)
+example:(111,ravi,60000,vij)
+
+what is database?
+------------------
+organized collection of related records stored together.
+ex: an employee database containing all employee records.
+
+Client-Server:-
+------------------
+client : the role of the client in client-server architecture is to send request to the server. to get response from the server.
+
+Server:- server is software the role of the server in client-server arch is to take request from the client. 
+if the request is valid request then it will generate some response we can handover that response to client.
+if client request is not a valid request then it will raise errors.
+
+protocol:-it has to set of rules and regulations .the role of the protocol in client-server arch is to send request from client to server.
+
+Data Models in DBMS:-
+==================
+A data model defines how data is stored ,organised and manipulated in a database.
+
+1. Physical data model:-
+===================
+Describes how data is physically stored in storage devices.
+who uses: Data administrators.
+2.Logicala data model:-
+=====================
+Defines the structure of the data (entities, attributes, relationships)independent of physical storage areas.
+who uses: developers, and data architects.
+3.Hierarchial Data Model:-
+=============================
+data is represented as tree Structure (parent child relationship)
+example:- company-->,departments,-->employees
+4.Network data model:-
+=========================
+Data is represented as a graphs with records(nodes)and relationships(edges)
+example:- student enrolled in multiple courses ,courses tough by multiple professors
+5.Relational data model:-
+=======================
+Data is stored in tables(relations)with rows(tuples)and columns(attributes)
+example:-student(id, name ,marks, age, dept)
+department(dept_id, dept_name)
+6.Entity Relationship(E-R Model)
+==============================
+A conceptual model that shows entities (things),attributes(properties)and relationships
+
+MySQL Installation:-
+https://tinyurl.com/MySQL-Batch-03
+
+
+
+
+
+
+
