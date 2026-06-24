@@ -1,0 +1,151 @@
+Day-3 
+=========
+SQL Identifiers:-
+-----------------
+Identifiers are the names to identify database objects such as database names, table names,  colum  names, view names, index names, constraints, triggers, or  stored procedures. while we are declaring  identifiers we need to follow some rules and regulations.
+1.the only allowed characters to declare identifiers can contain a-z, A-Z or 0-9,_,$.
+2.Must begin with letter or underscore(_).
+3.We cannot declare identifiers with reserved keywords.
+4.Spaces are not considered to declare identifiers.
+5.Identifers are case sensitive.
+6.Max length to declare identifiers are 15 characters.
+SQL:-(Structured Query Language)
+--------
+It is a standardised programming language specially designed for managing and manipulation relational databases.it provides declarative syntax that allows users to define what data they want retrieve, insert, update, or delete without specifying exactly how database executes these operations.
+
+Types of SQL Commands:-
+1.DDL:-data definition language:
+=================================
+ create: by using these commands to create a new databases tables,views,indexes,trigger,stored procedures.
+create database:
+-------------------
+syntax: create database database-name
+example: create database pfs-3;
+
+syntax
+------------
+create table table-name(
+column-name data-type size constraint,-->constraint is optional,
+column-name data-type size constraint ,
+-------------------------------------
+-------------------------------------
+);
+
+
+
+
+
+ alter: by using these alter command to modify the structure of an existing database object.
+drop: by using these command we can drop the existing database object or table permanently.
+truncate :it is used to delete all rows present in a table.
+rename: it used to rename the table names or column names ..etc
+
+2.DML:-(Data Manipulation Lang)
+================================
+insert: by using these command we can insert some records into a table.
+update: by using these command we can update the existing records.
+delete: by using this command we can delete the existing table records based on some condition.
+lock: it can be used to control access a resource , ensuring that only one transaction. Can be accessed it at a time of preventing conflicts.
+
+3.DCL:-(Data Control Lang)
+==================================
+grant: this command is used to give specific permission to a user in data base this permission might be include the ability to select,  update or delete as we can create or drop tables
+revoke: is used to takeaway granted permissions from user.
+
+4.TCL:-(Transaction Control Lang)
+====================================
+commit: this command is used to permanently save the changes made during the current transaction .
+once committed it changes becomes permanent and visible to other transaction.
+
+rollback: if an error occurs or if transaction needs to be canceled for any reason rollback is used to revert the database
+save point: it used to set a point within a transaction who which can later rollback.
+5.DQL:-(Data Query Lang)
+select: this command is used to retrieve data from one or more tables.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+5 rows in set (0.16 sec)
+
+mysql> create database da3;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| da3                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use pfs3;
+Database changed
+mysql> create table employee;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create Table EMPLOYEES()
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(30),
+    -> AGE INT,
+    -> DOOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20)
+    -> ^C
+mysql> ^C
+    -> Create Table EMPLOYEES(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(30),
+    -> LNAME VARCHAR(100),
+    -> AGE INT,
+    -> DOOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '^C
+Create Table EMPLOYEES(
+EMPID CHAR(5),
+FNAME VARCHAR(30),
+LNAME VARCHAR(100),' at line 1
+mysql> TO SHOW THE TABLE DESCRIPTION 
+    -> SHOW COLUMNS FROM EMPLOYEES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TO SHOW THE TABLE DESCRIPTION 
+SHOW COLUMNS FROM EMPLOYEES' at line 1
+mysql> ^C
+mysql> Create Table Employees(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(30),
+    -> AGE INT,
+    -> DOOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> -desc Employees;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-desc Employees' at line 1
+mysql> desc Employees;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(100) | YES  |     | NULL    |       |
+| LNAME   | varchar(30)  | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOOJ    | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.02 sec)
+
+mysql> Terminal close -- exit!
