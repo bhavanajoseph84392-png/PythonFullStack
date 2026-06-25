@@ -182,8 +182,6 @@ def check_palindrome(num):
 num = int(input("Enter a number:"))
 check_palindrome(num)
 
-'''
-
 def atm(pin):
 
     SBI_bank = {"ATM PIN": "7700"}
@@ -202,15 +200,71 @@ pin = input("Enter 4 digit ATM pin: ")
 
 atm(pin)
 
+def square_elements(numbers):
+    print("Squares:")
+    for num in numbers:
+        print(f"{num} x {num} = {num ** 2}")
+
+nums = list(map(int, input("Enter numbers separated by comma: ").split(",")))
+square_elements(nums)
+
+
+def check_even_odd(num):
+    if num % 2 == 0:
+        print(f"{num} is Even")
+    else:
+        print(f"{num} is Odd")
+
+num = int(input("Enter a number: "))
+check_even_odd(num)
 
 
 
+class Employee:
+    def __init__(self, name, emp_id):
+        self.name = name
+        self.emp_id = emp_id
 
+class FullTimeEmployee(Employee):
+    def __init__(self, name, emp_id, salary):
+        super().__init__(name, emp_id)
+        self.salary = salary
+    def calculate_pay(self):
+        return self.salary / 12
 
+class ContractEmployee(Employee):
+    def __init__(self, name, emp_id, rate, hours):
+        super().__init__(name, emp_id)
+        self.rate = rate
+        self.hours = hours
+    def calculate_pay(self):
+        return self.rate * self.hours
 
+# --- Direct Input (No loops, no menus) ---
+emp_type = input("Enter type (FT for Full-Time / CT for Contract): ").upper()
+name = input("Enter Name: ")
+eid = input("Enter ID: ")
 
+if emp_type == "FT":
+    sal = float(input("Enter Annual Salary: "))
+    obj = FullTimeEmployee(name, eid, sal)
+elif emp_type == "CT":
+    rate = float(input("Enter Hourly Rate: "))
+    hrs = float(input("Enter Hours Worked: "))
+    obj = ContractEmployee(name, eid, rate, hrs)
+else:
+    print("Invalid Type")
+    exit()
 
-
+print(f"Employee: {obj.name} | Monthly Pay: ${obj.calculate_pay():.2f}")
+'''
+arr = [2,7,5,4,8,6]
+third_max_element = arr[0]
+for i in arr:
+    if i < third_max_element:
+        third_max_element = i
+print(third_max_element)
+    
 
 
 
