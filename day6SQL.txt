@@ -1,0 +1,380 @@
+day-6
+=====
+DCL: used to grand or revoke permission.
+select: read data
+insert: insert data
+we can create the user for the permissions.
+user creation: create user"username"  identified "password"
+grant:grant on table _name to "username"
+revoke: revoke privilege on table_name from ""
+transaction :-
+=============
+a transaction is a sequence of one or more sql operations executed as a single logical unit of work.it ensures that either all operations are completely successfully or none of them are applied to the database.
+IQ
+----
+a transaction is a logical unit of work consisting one or more sql statements that follows the ACID properties to maintain data integrity and consistency.
+
+ACID Properties:
+A-->Atomicity :either all operations happen or none happen
+C-->Consistency the database remains in a valid state before and after the transaction.
+I--> Isolation:concurrent transactions do not interface with each other.
+D--> Durability:once committed changes are permanent even if the system crashes.
+
+TCL Commands:-
+-------------
+1.commit
+2.rollback
+3.save point
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> TEE C:\MYSQL/day6SQL.txt
+Logging to file 'C:\MYSQL/day6SQL.txt'
+mysql> use pfs3;
+Database changed
+mysql> create student(
+    -> ^C
+mysql> create students(
+    -> stdid int(40)
+    -> name  varchar(60)
+    -> mobile varchar(50)^C
+mysql> create students(
+    -> sid int,
+    -> sname varchar(40),
+    -> mobile varchar(50),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students(
+sid int,
+sname varchar(40),
+mobile varchar(50),
+)' at line 1
+mysql> create students(
+    -> stdid int,
+    -> sname varchar(40),
+    -> mobile varhar(10),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students(
+stdid int,
+sname varchar(40),
+mobile varhar(10),
+)' at line 1
+mysql> create students(
+    -> sid int,
+    -> name varchar (30),
+    -> mobile varchar(10),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students(
+sid int,
+name varchar (30),
+mobile varchar(10),
+)' at line 1
+mysql> ^C
+mysql> create students(
+    -> sid int,
+    -> name varchar(30),
+    -> mobile varchar(10),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students(
+sid int,
+name varchar(30),
+mobile varchar(10),
+)' at line 1
+mysql> create table students(
+    -> sid int,
+    -> name varchar (30),
+    -> mobile varhar(10),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varhar(10),
+)' at line 4
+mysql> create table students(
+    -> sid int,
+    -> name varchar (30),
+    -> mobile varhar(10)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varhar(10)
+)' at line 4
+mysql> ^C
+mysql> create table students(
+    -> sid int,
+    -> mobile varchar(10),
+    -> name varchar(30)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> create user bhavana identified by'bhavana123';
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> create user bhavya identified by 'bhavya567';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from students;
+Empty set (0.01 sec)
+
+mysql> show desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'desc' at line 1
+mysql> insert into student values
+    -> ('103',9866174438,'bhavya')
+    -> ^C
+mysql> insert into student values
+    -> (111,'1234567','bhavana'),
+    -> (123,'678913','bhavya');
+ERROR 1146 (42S02): Table 'pfs3.student' doesn't exist
+mysql> insert into students values
+    -> (111,'1234567','bhavana'),
+    -> (103,9866174438,'bhavya');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------+------------+---------+
+| sid  | mobile     | name    |
++------+------------+---------+
+|  111 | 1234567    | bhavana |
+|  103 | 9866174438 | bhavya  |
++------+------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> grant select,update to 'bhavana123';
+ERROR 1064 (42000): Illegal authorization identifier near 'select,update to 'bhavana123'' at line 1
+mysql> grant select,update on students to bhavana;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> grant select,update on students to bhavya;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+Microsoft Windows [Version 10.0.26200.8524]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u bhavana -p
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 28
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use pfs3;
+Database changed
+mysql> select * from students;
++------+------------+---------+
+| sid  | mobile     | name    |
++------+------------+---------+
+|  111 | 1234567    | bhavana |
+|  103 | 9866174438 | bhavya  |
++------+------------+---------+
+2 rows in set (0.00 sec)
+
+mysql> update students set name = 'tarun'where sid = 111;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | bhavya |
++------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update students set name = 'arun'where sid = 103;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------+------------+-------+
+| sid  | mobile     | name  |
++------+------------+-------+
+|  111 | 1234567    | tarun |
+|  103 | 9866174438 | arun  |
++------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update students set name='sharma'where sid=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
++------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++------+------------+-------+
+| sid  | mobile     | name  |
++------+------------+-------+
+|  111 | 1234567    | tarun |
+|  103 | 9866174438 | arun  |
++------+------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update students set name='sharma'where sid=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
++------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
++------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into students values(555,'4667687','sir');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
+|  555 | 4667687    | sir    |
++------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> update students set name='siri'where sid= 555;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> selct* from students;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct* from students' at line 1
+mysql> select* from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
+|  555 | 4667687    | siri   |
++------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> insert into students values(666,'5667687','dev');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select* from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
+|  555 | 4667687    | siri   |
+|  666 | 5667687    | dev    |
++------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> delete from students where sid = 111;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*fromstudents;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'fromstudents' at line 1
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  103 | 9866174438 | sharma |
+|  555 | 4667687    | siri   |
+|  666 | 5667687    | dev    |
++------+------------+--------+
+3 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> selct*from students;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct*from students' at line 1
+mysql> select*from students;
++------+------------+--------+
+| sid  | mobile     | name   |
++------+------------+--------+
+|  111 | 1234567    | tarun  |
+|  103 | 9866174438 | sharma |
++------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> -- lock
+mysql> -- 1. set transaction isolation level read committed
+mysql> set transaction isolation level read committed;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from students where sid = 111 for update;
++------+---------+-------+
+| sid  | mobile  | name  |
++------+---------+-------+
+|  111 | 1234567 | tarun |
++------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> update students set name = 'dev' where sid = 111;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from students for insert;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert' at line 1
