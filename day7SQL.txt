@@ -1,0 +1,98 @@
+day-7
+=====
+Constraints
+--------
+Constraints are rules applied to a table column in my sql to ensure that only valid and accurate data is stored in the database.
+Why do we use constraints:-
+-----------------------------
+1.Maintain data integrity
+2.To prevent invalid data entry
+3. Avoid duplicate records.
+4. ensures relations between tables.
+5. make the data base reliable and constraint.
+Types of Constraints:-
+====================
+1. not null :it does not allow null values 
+can take duplicates
+2.Unique key: it does not allow duplicate values we can take unique values duplicates.
+3.primary key: it the combination of unique + not null.: cannot apply more primary keys, it supports for only table level, it acts as a key value pair.
+4. Composite key: multiple columns for primary key.
+*5. Foreign key: we can merge two tables. a foreign key is a field or collection of fields (collection of fields)in one table that referee to the primary key in another table.
+the table containing the foreign key is called child table and the table containing the candidate key is called referenced table or parent table.
+6. check constraint: it is like conditional value for ex: if we give a condition between 50 to 100.
+7. default constraint: it will give by default values.
+================================================================================
+What are Referential Actions:-
+Referential actions :it defines what happens to child table data when parent table data is updated or deleted .
+they are used with foreign key constraints;
+1. on delete cascade:
+when a parent table row is deleted ,all matching child rows are automatically deleted.
+2.on update cascade: when a parent key is updated , all matching child foreign key are updated automatically.
+mysql> delete pfs3 database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| da3                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> delete pf3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> notee.
+    -> ^C
+mysql> NOTEE;
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| da3                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> show tables
+    -> ^C
+mysql> use da3;
+Database changed
+mysql> create table department(
+    -> dept_id int,
+    -> dept_name varchar(10)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into department values (111,'HR',),(122,'Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '),(122,'Finance')' at line 1
+mysql> insert into department values (111,'HR',) (122,'Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') (122,'Finance')' at line 1
+mysql> insert into department values (111,'HR'), (122,'Finance');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into department values (333,'Sales'), (444,'Marketing');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from departments;
+ERROR 1146 (42S02): Table 'da3.departments' doesn't exist
+mysql> show dec;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'dec' at line 1
+mysql> desc departments;
+ERROR 1146 (42S02): Table 'da3.departments' doesn't exist
+mysql> INSERT INTO departments VALUES (111, 'HR'), (122, 'Finance');
+ERROR 1146 (42S02): Table 'da3.departments' doesn't exist
+mysql> Terminal close -- exit!
