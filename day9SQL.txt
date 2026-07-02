@@ -1,0 +1,556 @@
+mysql> use pfs3;
+Database changed
+mysql> create table orders(
+    -> id int,
+    -> customer_name varchar(100),
+    -> order_date date,
+    -> total_amount decimal
+    -> );
+Query OK, 0 rows affected (0.29 sec)
+
+mysql> desc orders;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| id            | int           | YES  |     | NULL    |       |
+| customer_name | varchar(100)  | YES  |     | NULL    |       |
+| order_date    | date          | YES  |     | NULL    |       |
+| total_amount  | decimal(10,0) | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> insert INSERT INTO Orders VALUES
+    ->  (1, 'Alice', '2024-03-01', 1500.00),
+    ->  (2, 'Bob', '2024-03-05', 450.00),
+    ->  (3, 'Charlie', '2024-03-10', 2500.00),
+    ->  (4, 'Diana', '2024-03-15', 800.00),
+    ->  (5, 'Eve', '2024-03-20', 1200.00),
+    ->  (6, 'Frank', '2024-03-25', 3000.00),
+    ->  (7, 'Grace', '2024-04-02', 1800.00),
+    ->  (8, 'Henry', '2024-04-08', 950.00),
+    ->  (9, 'Ivy', '2024-04-12', 2750.00),
+    ->  (10, 'Jack', '2024-04-18', 650.00),
+    ->  (11, 'Kevin', '2024-04-22', 4200.00),
+    ->  (12, 'Lily', '2024-05-01', 1350.00),
+    ->  (13, 'Michael', '2024-05-08', 5000.00),
+    ->  (14, 'Nancy', '2024-05-15', 2250.00),
+    ->  (15, 'Oliver', '2024-05-25', 900.00);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSERT INTO Orders VALUES
+ (1, 'Alice', '2024-03-01', 1500.00),
+ (2, 'Bob', '202' at line 1
+mysql>  ^C
+mysql> INSERT INTO Orders VALUES
+    ->  (1, 'Alice', '2024-03-01', 1500.00),
+    ->  (2, 'Bob', '2024-03-05', 450.00),
+    ->  (3, 'Charlie', '2024-03-10', 2500.00),
+    ->  (4, 'Diana', '2024-03-15', 800.00),
+    ->  (5, 'Eve', '2024-03-20', 1200.00),
+    ->  (6, 'Frank', '2024-03-25', 3000.00),
+    ->  (7, 'Grace', '2024-04-02', 1800.00),
+    ->  (8, 'Henry', '2024-04-08', 950.00),
+    ->  (9, 'Ivy', '2024-04-12', 2750.00),
+    ->  (10, 'Jack', '2024-04-18', 650.00),
+    ->  (11, 'Kevin', '2024-04-22', 4200.00),
+    ->  (12, 'Lily', '2024-05-01', 1350.00),
+    ->  (13, 'Michael', '2024-05-08', 5000.00),
+    ->  (14, 'Nancy', '2024-05-15', 2250.00),
+    ->  (15, 'Oliver', '2024-05-25', 900.00);
+Query OK, 15 rows affected (0.02 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql>mysql> select * from orders where order_date between '2024-03-03'AND '2024-03-10';
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    2 | Bob           | 2024-03-05 |          450 |DEROP
+|    3 | Charlie       | 2024-03-10 |         2500 |
++------+---------------+------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> update oreders set total_amount = total_amount +1000 where order_date between '2024-03-04'AND '2024-03-10';
+ERROR 1146 (42S02): Table 'pfs3.oreders' doesn't exist
+mysql> update orders set total_amount = total_amount +1000 where order_date between '2024-03-04'AND '2024-03-10';
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> SELECT * FROM ORDERS WHERE ORDER_DATE BETWEEN '2024-03-04'AND '2024-03-10';
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    2 | Bob           | 2024-03-05 |         1450 |
+|    3 | Charlie       | 2024-03-10 |         3500 |
++------+---------------+------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> -- REMOVE PRODUCTS FROM ORDERS PLACED IN BETWEEN '2024-3-10' TO '2024-3-20'
+mysql> SELECT * FROM ORDERS;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |         1500 |
+|    2 | Bob           | 2024-03-05 |         1450 |
+|    3 | Charlie       | 2024-03-10 |         3500 |
+|    4 | Diana         | 2024-03-15 |          800 |
+|    5 | Eve           | 2024-03-20 |         1200 |
+|    6 | Frank         | 2024-03-25 |         3000 |
+|    7 | Grace         | 2024-04-02 |         1800 |
+|    8 | Henry         | 2024-04-08 |          950 |
+|    9 | Ivy           | 2024-04-12 |         2750 |
+|   10 | Jack          | 2024-04-18 |          650 |
+|   11 | Kevin         | 2024-04-22 |         4200 |
+|   12 | Lily          | 2024-05-01 |         1350 |
+|   13 | Michael       | 2024-05-08 |         5000 |
+|   14 | Nancy         | 2024-05-15 |         2250 |
+|   15 | Oliver        | 2024-05-25 |          900 |
++------+---------------+------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> DELETE FROM ORDERS WHERE ORDER_DATE BETWEEN '2024-3-10' AND '2024-3-20';
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |         1500 |
+|    2 | Bob           | 2024-03-05 |         1450 |
+|    6 | Frank         | 2024-03-25 |         3000 |
+|    7 | Grace         | 2024-04-02 |         1800 |
+|    8 | Henry         | 2024-04-08 |          950 |
+|    9 | Ivy           | 2024-04-12 |         2750 |
+|   10 | Jack          | 2024-04-18 |          650 |
+|   11 | Kevin         | 2024-04-22 |         4200 |
+|   12 | Lily          | 2024-05-01 |         1350 |
+|   13 | Michael       | 2024-05-08 |         5000 |
+|   14 | Nancy         | 2024-05-15 |         2250 |
+|   15 | Oliver        | 2024-05-25 |          900 |
++------+---------------+------------+--------------+
+12 rows in set (0.00 sec)
+
+mysql>mysql> update emp set salary = salary+2000 where name like 'r%';
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  52000 |
+|    2 | Ramesh | HR        |  37000 |
+|    3 | Karan  | Finance   |  45000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    6 | Arjun  | Sales     |  38000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   10 | Rohan  | IT        |  54000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  53000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> update emp set salary = salary+3000 where name like '%sh';
+Query OK, 8 rows affected (0.01 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  52000 |
+|    2 | Ramesh | HR        |  40000 |
+|    3 | Karan  | Finance   |  45000 |
+|    4 | Mahesh | Marketing |  43000 |
+|    5 | Suresh | IT        |  58000 |
+|    6 | Arjun  | Sales     |  38000 |
+|    7 | Manish | Admin     |  45000 |
+|    8 | Ganesh | Finance   |  50000 |
+|    9 | Naresh | HR        |  42000 |
+|   10 | Rohan  | IT        |  54000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  49000 |
+|   14 | Rajesh | Finance   |  56000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> update emp set salary = salary+1000 where name like '%ar%';
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  52000 |
+|    2 | Ramesh | HR        |  40000 |
+|    3 | Karan  | Finance   |  46000 |
+|    4 | Mahesh | Marketing |  43000 |
+|    5 | Suresh | IT        |  58000 |
+|    6 | Arjun  | Sales     |  39000 |
+|    7 | Manish | Admin     |  45000 |
+|    8 | Ganesh | Finance   |  50000 |
+|    9 | Naresh | HR        |  43000 |
+|   10 | Rohan  | IT        |  54000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  49000 |
+|   14 | Rajesh | Finance   |  56000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> update emp set salary = salary+500 where name like '_____';
+Query OK, 6 rows affected (0.01 sec)
+Rows matched: 6  Changed: 6  Warnings: 0
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  52500 |
+|    2 | Ramesh | HR        |  40000 |
+|    3 | Karan  | Finance   |  46500 |
+|    4 | Mahesh | Marketing |  43000 |
+|    5 | Suresh | IT        |  58000 |
+|    6 | Arjun  | Sales     |  39500 |
+|    7 | Manish | Admin     |  45000 |
+|    8 | Ganesh | Finance   |  50000 |
+|    9 | Naresh | HR        |  43000 |
+|   10 | Rohan  | IT        |  54500 |
+|   11 | Mohan  | Sales     |  41500 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  49000 |
+|   14 | Rajesh | Finance   |  56000 |
+|   15 | Kiran  | IT        |  48500 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> update emp set salary = salary+1000 where name like '';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update emp set salary = salary+1000 where name like '_a%';
+Query OK, 8 rows affected (0.00 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  53500 |
+|    2 | Ramesh | HR        |  41000 |
+|    3 | Karan  | Finance   |  47500 |
+|    4 | Mahesh | Marketing |  44000 |
+|    5 | Suresh | IT        |  58000 |
+|    6 | Arjun  | Sales     |  39500 |
+|    7 | Manish | Admin     |  46000 |
+|    8 | Ganesh | Finance   |  51000 |
+|    9 | Naresh | HR        |  44000 |
+|   10 | Rohan  | IT        |  54500 |
+|   11 | Mohan  | Sales     |  41500 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  49000 |
+|   14 | Rajesh | Finance   |  57000 |
+|   15 | Kiran  | IT        |  48500 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> delete from emp where name like 'r%';
+Query OK, 4 rows affected (0.01 sec)
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    3 | Karan  | Finance   |  47500 |
+|    4 | Mahesh | Marketing |  44000 |
+|    5 | Suresh | IT        |  58000 |
+|    6 | Arjun  | Sales     |  39500 |
+|    7 | Manish | Admin     |  46000 |
+|    8 | Ganesh | Finance   |  51000 |
+|    9 | Naresh | HR        |  44000 |
+|   11 | Mohan  | Sales     |  41500 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  49000 |
+|   15 | Kiran  | IT        |  48500 |
++------+--------+-----------+--------+
+11 rows in set (0.00 sec)
+
+mysql> delete from emp where name like '%sh';
+Query OK, 6 rows affected (0.01 sec)
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    3 | Karan  | Finance   |  47500 |
+|    6 | Arjun  | Sales     |  39500 |
+|   11 | Mohan  | Sales     |  41500 |
+|   12 | Kishan | Marketing |  43000 |
+|   15 | Kiran  | IT        |  48500 |
++------+--------+-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from emp where name like '_____';
+Query OK, 4 rows affected (0.01 sec)
+
+mysql> select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|   12 | Kishan | Marketing |  43000 |
++------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> delete from emp where name like 'k%n';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from emp;
+Empty set (0.00 sec)
+
+mysql> delete from emp where name like '_a';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from emp;'
+Empty set (0.00 sec)
+
+    '> ^C
+Aggregate Functions
+====================
+aggregate functions perform calculations on multiple rows and return a single column.
+there are various aggregate functions such as:
+min():perform min value
+max(): returns max value
+count():counts the number of rows
+sum(): calculates the total of numeric values.
+avg(): calculates the average value
+mysql> select * from emp;
+Empty set (0.00 sec)
+
+mysql> drop emp table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'emp table' at line 1
+mysql> drop table emp;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE Emp (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  dept VARCHAR(20),
+    ->  salary INT
+    ->  );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Emp VALUES
+    ->  (1, 'Rahul', 'IT', 50000),
+    ->  (2, 'Ramesh', 'HR', 35000),
+    ->  (3, 'Karan', 'Finance', 45000),
+    ->  (4, 'Mahesh', 'Marketing', 40000),
+    ->  (5, 'Suresh', 'IT', 55000),
+    ->  (6, 'Arjun', 'Sales', 38000),
+    ->  (7, 'Manish', 'Admin', 42000),
+    ->  (8, 'Ganesh', 'Finance', 47000),
+    ->  (9, 'Naresh', 'HR', 39000),
+    ->  (10, 'Rohan', 'IT', 52000),
+    ->  (11, 'Mohan', 'Sales', 41000),
+    ->  (12, 'Kishan', 'Marketing', 43000),
+    ->  (13, 'Dinesh', 'Admin', 46000),
+    ->  (14, 'Rajesh', 'Finance', 51000),
+    ->  (15, 'Kiran', 'IT', 48000);
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql>  select * from emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  50000 |
+|    2 | Ramesh | HR        |  35000 |
+|    3 | Karan  | Finance   |  45000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    6 | Arjun  | Sales     |  38000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   10 | Rohan  | IT        |  52000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  51000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql>  select min (salary)as minimum_salary from emp;
+ERROR 1630 (42000): FUNCTION pfs3.min does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+mysql>  select min(salary)as minimum_salary from emp;
++----------------+
+| minimum_salary |
++----------------+
+|          35000 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql>  select max(salary)as maximum_salary from emp;
++----------------+
+| maximum_salary |
++----------------+
+|          55000 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select sum(salary)as total_salary from emp;
++--------------+
+| total_salary |
++--------------+
+|       672000 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)as employee_count from emp;
++----------------+
+| employee_count |
++----------------+
+|             15 |
++----------------+
+1 row in set (0.01 sec)
+
+mysql> select avg(salary)as avg_salary from emp;
++------------+
+| avg_salary |
++------------+
+| 44800.0000 |
++------------+
+1 row in set (0.00 sec)
+System informative functions:-
+1.curdate():returns the current date.
+2.curtime ():returns the current time.
+3.now(): returns the current date and time.
+4.database(): return the current database name.
+5.user(): returns the current logged in user.
+6. current_user(): returns the authenticated MySQL account.
+7. version(): returns the MySQL current version.
+8.sys date(): returns the current system date and time.
+9.connection_id(): returns the current connection id.
+10.UTC_DATE(): returns the current UTC_DATE.
+11.UTC_TIME():returns the current UTC_TIME.
+12.UTC_TIMESTAMP():returns the current UTC date and time.
+
+
+
+
+
+
+
+
+
+
+
+
+
+mysql> slect CURDATE();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect CURDATE()' at line 1
+mysql> sElect CURDATE();
++------------+
+| CURDATE()  |
++------------+
+| 2026-07-02 |
++------------+
+1 row in set (0.01 sec)
+
+mysql> select CURTIME();
++-----------+
+| CURTIME() |
++-----------+
+| 10:38:21  |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2026-07-02 10:38:32 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select database();
++------------+
+| database() |
++------------+
+| pfs3       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select user();
++----------------+
+| user()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select current_user();
++----------------+
+| current_user() |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select version();
++-----------+
+| version() |
++-----------+
+| 8.0.46    |
++-----------+
+1 row in set (0.01 sec)
+
+mysql> select sys date();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '()' at line 1
+mysql> select sysdate();
++---------------------+
+| sysdate()           |
++---------------------+
+| 2026-07-02 10:40:26 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select connection_id();
++-----------------+
+| connection_id() |
++-----------------+
+|              47 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> select utc_date();
++------------+
+| utc_date() |
++------------+
+| 2026-07-02 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select utc_time();
++------------+
+| utc_time() |
++------------+
+| 05:10:57   |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select utc_timestamp();
++---------------------+
+| utc_timestamp()     |
++---------------------+
+| 2026-07-02 05:11:16 |
++---------------------+
+1 row in set (0.00 sec)
+
