@@ -1,57 +1,59 @@
 class ATM:
 
     def __init__(self):
-        self.name = "Bhavana"
-        self.mobile_number = ""
-        self.atm_pin = "4400"
-        self.balance = 98567
-        self.transaction_history = []
+        self.user_info = {
+            "Name": "Bhavana",
+            "Mobile Number": 6436463722,
+            "ATM_PIN": "4400",
+            "Balance": 98567,
+            "Transaction_History": []
+        }
 
     def deposit(self):
         amount = int(input("Enter the amount to be deposited: "))
 
-        if amount <= 1000 and amount % 100 != 0:
+        if amount <= 1000 or amount % 100 != 0:
             print("Minimum deposit should be above 1000")
             print("Enter amount in multiples of 100")
 
         else:
-            self.balance += amount
-            self.transaction_history.append(f"Deposit: {amount}")
+            self.user_info["Balance"] += amount
+            self.user_info["Transaction_History"].append(f"Deposit: {amount}")
             print(f"{amount} deposited successfully")
 
     def withdraw(self):
         amount = int(input("Enter the amount to be withdrawn: "))
 
-        if amount > self.balance and  amount % 100 != 0:
+        if amount > self.user_info["Balance"] or amount % 100 != 0:
             print("Insufficient balance")
             print("Enter amount in multiples of 100")
 
         else:
-            self.balance -= amount
-            self.transaction_history.append(f"Withdraw: {amount}")
-            print(f"Withdrawal successful! New balance: {self.balance}")
+            self.user_info["Balance"] -= amount
+            self.user_info["Transaction_History"].append(f"Withdraw: {amount}")
+            print(f"Withdrawal successful! New balance: {self.user_info['Balance']}")
 
     def change_pin(self):
         new_pin = input("Enter your new 4-digit PIN: ")
 
         if len(new_pin) == 4 and new_pin.isdigit():
-            self.atm_pin = new_pin
+            self.user_info["ATM_PIN"] = new_pin
             print("PIN changed successfully.")
 
         else:
             print("Invalid PIN. Please enter exactly 4 digits.")
 
     def check_balance(self):
-        print(f"Your current balance is: {self.balance}")
+        print(f"Your current balance is: {self.user_info['Balance']}")
 
     def mini_statement(self):
         print("\nTransaction History")
 
-        if not self.transaction_history:
+        if not self.user_info["Transaction_History"]:
             print("No transactions yet.")
 
         else:
-            for record in self.transaction_history:
+            for record in self.user_info["Transaction_History"]:
                 print(record)
 
     def verify_pin(self):
@@ -61,7 +63,7 @@ class ATM:
 
             pin = input("Enter your ATM PIN: ")
 
-            if pin == self.atm_pin:
+            if pin == self.user_info["ATM_PIN"]:
                 return True
 
             attempts -= 1
@@ -101,20 +103,24 @@ class ATM:
             elif selection == "5":
                 self.mini_statement()
 
+            elif selection == "6":
+                print("Thank You")
+                break
+
             else:
                 print("Invalid selection.")
-            option = int(input("1.MAIN MENU\n2.EXIT:"))
+
+            option = int(input("1.MAIN MENU\n2.EXIT: "))
             if option == 2:
                 print("Thank You")
                 break
-                               
 
     def start(self):
 
         print("Please insert your ATM card.")
 
         if self.verify_pin():
-            print(f"Welcome, {self.name}!")
+            print(f"Welcome, {self.user_info['Name']}!")
             self.atm_menu()
 
 
