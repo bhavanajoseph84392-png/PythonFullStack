@@ -1,0 +1,326 @@
+A sub query is a query inside another query.
+It is written inside parenthesis()and its result is used by the outer 	query.
+it is also called as
+1.inner query
+2.nested query
+3.inner select
+
+general syntax:-
+==================
+select column-name
+from table
+where column operator(select column from table where condition)
+purpose of sub query:-
+To break down complex problems into smaller queries.
+to use the result of one query as input to another
+to avoid multiple steps(write a single query instead of temp tables.)
+types:-
+=======
+1.Single row:-
+2.Multiple row
+3.Nested subquery
+4.Corelated subquery
+5.Exists. not exists subquery.
+
+
+1.Single row:-
+single row subqueries returns exactly one row and one column.they use comparison opertaors like =,><,<=,>=,!=
+characteristics:
+--------------------
+returns only one value
+can use single value comparison operators
+if subquery returns no rows or multiple rows it causes error.
+syntax:-
+select columns 
+from table
+where column operator(select column from table where condition).
+
+2.Multiple row:-
+=================
+Multi row sub queries returns multiple rows.when using any or some the condition is true if it matches at least one value returns  by the subquery
+characteristics:-
+====================
+returns multiple values
+any and some are interchangeable
+condition is true if any of the values satisfy the condition.
+often used with IN,>ANY,<ANY,>=ANY,<=ANY ....etc
+syntax:-
+=======
+selects columns from table
+where column operator any/some(select columns from table where condition).
+3.Multi row subqueries with all:-
+================================
+The all operators means the condition must be true for all values returned by the subquery.
+characteristics:-
+often used with >ALL,<ALL,>=ALL,<=ALL
+>ALL means greater than maximum value
+<ALL means less than minimum value
+
+syntax:-
+--------
+select columns
+from table
+where column operator ALL(select column from table where condition).
+4.Nested subquery:-
+======================
+They are subqueries within subquery. they can be multiple levels deep and are executed from the innermost to the innermost.
+characteristics:-
+================
+multiple levels of nesting
+inner querries execute first
+can combine different types of sub queries
+useful for complex conditions.
+
+syntax:-
+=========
+select column-list
+from table
+where column(select column
+                from table
+                  where column= (select column
+                                 from table
+                                  where condition));
+4.Corelated subquery:-
+========================
+corelated subqueries are subqueries that reference columns from the outer query.
+unlike regular subqueries that execute once. corelated subqueries execute once for each row processed by the outer query.
+characteristics:-
+=================
+reference columns from the outer query
+executes multiple times(once per outer row).
+cannot be executed independently
+often used with exists,  not exists.
+generally slower than non-corelated subqueries.
+syntax:-
+==========
+select columns
+from table outer alias
+where condition(select column
+                   from table2 inner_alias
+                      where inner_alias.column= outer_alias.column).]
+
+6.Exists. not exists subquery.
+=============================
+exists used to test whether a subquery returns any rows.it returns true if the subquery returns at least one row , false otherwise not exists returns true if the subquery return no rows.
+characteristics:-
+================
+return true/false (Boolean result)
+more efficient than IN for larger data sets.
+often used with corelated subqueries
+stops execution as soon as the first match is found.
+select clause in exists doesn't matter(often use select 1).
+syntax:-
+=======
+exists:-
+selct columns
+from table1
+where exists(select 1 from table2 where condition).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mysql> create pfs3 database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'pfs3 database' at line 1
+mysql> create database pfs3;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| jfs2               |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+6 rows in set (0.06 sec)
+
+mysql> use jf2;
+ERROR 1049 (42000): Unknown database 'jf2'
+mysql> use jfs2;
+Database changed
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.04 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.02 sec)
+
+mysql> select e.name,d.department_name,e.salary
+    -> from employees e
+    -> join departments d
+    -> on e.department_id = d.department_is
+    -> order by e.salary;
+ERROR 1054 (42S22): Unknown column 'd.department_is' in 'on clause'
+mysql> select e.name,d.department_name,e.salary
+    -> from employees e
+    -> join departments d
+    -> on e.department_id = d.department_id
+    -> order by e.salary desc;
++---------+-----------------+----------+
+| name    | department_name | salary   |
++---------+-----------------+----------+
+| Charan  | Engineering     | 72000.00 |
+| Bhavana | Engineering     | 65000.00 |
+| Gowri   | Engineering     | 62000.00 |
+| Jagan   | Marketing       | 60000.00 |
+| Farhan  | Finance         | 55000.00 |
+| Arjun   | Human Resources | 50000.00 |
+| Harish  | Operations      | 48000.00 |
+| Divya   | Marketing       | 45000.00 |
++---------+-----------------+----------+
+8 rows in set (0.03 sec)
+
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> join projects  p
+    -> on e.emp_id = p.emp_id
+    -> order by e.name;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Bhavana | Website Redesign     |
+| Bhavana | Cloud Migration      |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+7 rows in set (0.00 sec)
+
+mysql> select e.name , p.project_name
+    -> from employees e
+    -> ^C
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> left join
+    -> ^C
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id
+    -> group by d.departments_name
+    -> order by employee_count_desc;
+ERROR 1054 (42S22): Unknown column 'd.departments_name' in 'group statement'
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> ^C
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id
+    -> group by d.department_name
+    -> order by employee_count_desc;
+ERROR 1054 (42S22): Unknown column 'employee_count_desc' in 'order clause'
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id
+    -> group by d.department_name
+    -> order by employee_count desc;
++-----------------+----------------+
+| department_name | employee_count |
++-----------------+----------------+
+| Engineering     |              3 |
+| Marketing       |              2 |
+| Human Resources |              1 |
+| Finance         |              1 |
+| Operations      |              1 |
++-----------------+----------------+
+5 rows in set (0.01 sec)
+
+mysql> select d.department_name, count(e.emp_id)as employee_count
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id
+    -> group by d.department_name
+    -> having employee_count>1
+    -> order by employee_count desc;
++-----------------+----------------+
+| department_name | employee_count |
++-----------------+----------------+
+| Engineering     |              3 |
+| Marketing       |              2 |
++-----------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select e.name,count(p.project_id)as project_count
+    -> from employees e
+    -> join projects p on e.emp_id = p.emp_id
+    -> group by name
+    -> ^C
+mysql> select e.name,count(p.project_id)as project_count
+    -> from employees e
+    -> join projects p on e.emp_id = p.emp_id
+    -> group by e.name
+    -> having project_count>1
+    -> order by project_count desc;
++---------+---------------+
+| name    | project_count |
++---------+---------------+
+| Bhavana |             2 |
++---------+---------------+
+1 row in set (0.00 sec)
+
+mysql> -- departments with total salary salary>50000 order by total_salary
+mysql> select d.department_name,sum(e.salary)as total_salary
+    -> from employees e
+    -> join employees e on d.department_id = e.department_id
+    -> group by d.department_name
+    -> having total_salary >50000
+    -> order by total_salary desc;
+ERROR 1066 (42000): Not unique table/alias: 'e'
+mysql> select d.department_name,sum(e.salary)as total_salary
+    -> from departments d
+    -> join employees e on d.department_id = e.department_id
+    -> group by d.department_name
+    -> having total_salary >50000
+    -> order by total_salary desc;
++-----------------+--------------+
+| department_name | total_salary |
++-----------------+--------------+
+| Engineering     |    199000.00 |
+| Marketing       |    105000.00 |
+| Finance         |     55000.00 |
++-----------------+--------------+
+3 rows in set (0.00 sec)
+
