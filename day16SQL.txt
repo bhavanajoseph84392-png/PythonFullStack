@@ -1,0 +1,121 @@
+mysql> use pfs3;
+Database changed
+
+mysql> TEE C:\MYSQL/day16SQL.txt
+Logging to file 'C:\MYSQL/day16SQL.txt'
+mysql> use pfs3;
+Database changed
+mysql> -- employees earning more than average salary of their department
+mysql> select emp_name,salary
+    -> from employee e
+    -> where salary>(select avg(salary)from employee where dept_id=e.dept_id);
+ERROR 1146 (42S02): Table 'pfs3.employee' doesn't exist
+mysql> use jfs2;
+Database changed
+mysql> -- employees earning more than average salary of their department
+mysql> select emp_name,salary
+    -> from employee e
+    -> where salary>(select avg(salary)from employee where dept_id=e.dept_id);
++----------+----------+
+| emp_name | salary   |
++----------+----------+
+| Ravi     | 75000.00 |
+| Anjali   | 80000.00 |
+| Manoj    | 95000.00 |
++----------+----------+
+3 rows in set (0.03 sec)
+
+mysql> select * from employee;
++--------+----------+----------+---------+--------------+------------+
+| emp_id | emp_name | salary   | dept_id | job          | hire_date  |
++--------+----------+----------+---------+--------------+------------+
+|    101 | Amit     | 60000.00 |       2 | Developer    | 2021-06-12 |
+|    102 | Ravi     | 75000.00 |       2 | Manager      | 2020-03-15 |
+|    103 | Sneha    | 55000.00 |       1 | HR Executive | 2022-01-20 |
+|    104 | Priya    | 90000.00 |       3 | Accountant   | 2019-07-10 |
+|    105 | Vikas    | 50000.00 |       4 | Sales Exec   | 2022-05-30 |
+|    106 | Anjali   | 80000.00 |       2 | Developer    | 2021-08-25 |
+|    107 | Manoj    | 95000.00 |       3 | Manager      | 2018-11-05 |
++--------+----------+----------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+
+
+mysql> select d.dept_name,
+    -> second_min(e.salary)as second_minimum_salary
+    -> from employee e
+    -> join department d
+    -> on e.dept_id = d.dept_id
+    -> group by d.dept_name;
+ERROR 1305 (42000): FUNCTION jfs2.second_min does not exist
+mysql> -- department-wise 2nd min salary
+mysql> select  d.dept_id,d.dept_name,min(e.salary)as second_min_salary
+    -> from employee e
+    -> join department d on e.dept_id = d.dept_id
+    -> where e.salary>(
+    -> ^C
+mysql> select  d.dept_id,d.dept_name,min(e.salary)as second_min_salary
+    -> from employee e
+    -> join department d on e.dept_id = d.dept_id
+    -> where e.salary>()
+    -> ^C
+mysql> select  d.dept_id,d.dept_name,min(e.salary)as second_min_salary
+    -> from employee e
+    -> join department d on e.dept_id = d.dept_id\
+    -> where e.salary>(
+    -> select min(salary)
+    -> from employee e2
+    -> where e2.dept_id =e.dept_id
+    -> )
+    -> group by d.dept_id,d.dept_name;
++---------+-----------+-------------------+
+| dept_id | dept_name | second_min_salary |
++---------+-----------+-------------------+
+|       2 | IT        |          75000.00 |
+|       3 | Finance   |          95000.00 |
++---------+-----------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql>
+
+mysql>
+views
+==========
+what is view 
+---------------
+a view is a virtul table in MySQL but from the result of a stored select statement,it looks and behaves like regular table when you query it,you can select a column from it filterit,and join it but it doesn't any data of its own everytime  . a view is queried, MySQL runs its underlying select statement against the real tables and returns the result.
+think of view as a saved,reusable query with a name, instead of typing out a long join every time, you create the view once, then simply run.
+
+why do we need views?
+----------------------
+1. simplify complex queries
+2. reuse query logic
+3. data security
+different perspectives of the same data .
+simplified reporting
+
+Advantages of views:-
+1.security
+2.simplicity
+3.reusability
+4.maintainability
+no extra storage cost
+custom data presentation.
+
+creating views:-
+-----------------
+create view view_name as
+select columns from tables
+where condition;
+
+altering views:-
+----------------
+alter view view_name as
+select new columns
+from new tables
+where new conditions.
+
+drop views:-
+-----------
+drop view view_name;
+mysql> Terminal close -- exit!
