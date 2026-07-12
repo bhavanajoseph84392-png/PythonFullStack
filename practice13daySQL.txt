@@ -1,0 +1,943 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| jfs2               |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+6 rows in set (0.05 sec)
+
+mysql> use jfs2;
+Database changed
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     department_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+ERROR 1050 (42S01): Table 'employees' already exists
+mysql>  
+mysql> CREATE TABLE Departments (
+    ->     department_id INT PRIMARY KEY,
+    ->     department_name VARCHAR(100)
+    -> );
+ERROR 1050 (42S01): Table 'departments' already exists
+mysql>  
+mysql> CREATE TABLE Projects (
+    ->     project_id INT PRIMARY KEY,
+    ->     project_name VARCHAR(100),
+    ->     emp_id INT
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+
+mysql>  
+mysql> INSERT INTO Departments (department_id, department_name) VALUES
+    -> (1, 'Human Resources'), (2, 'Engineering'), (3, 'Marketing'), (4, 'Finance'), (5, 'Operations');
+ERROR 1054 (42S22): Unknown column 'department_id' in 'field list'
+mysql>  
+mysql> INSERT INTO Employees (emp_id, name, department_id, salary) VALUES
+    -> (101, 'Arjun', 1, 50000), (102, 'Bhavana', 2, 65000), (103, 'Charan', 2, 72000),
+    -> (104, 'Divya', 3, 45000), (105, 'Eswar', NULL, 40000), (106, 'Farhan', 4, 55000),
+    -> (107, 'Gowri', 2, 62000), (108, 'Harish', 5, 48000), (109, 'Ishita', NULL, 53000),
+    -> (110, 'Jagan', 3, 60000);
+ERROR 1054 (42S22): Unknown column 'name' in 'field list'
+mysql>  
+mysql> INSERT INTO Projects (project_id, project_name, emp_id) VALUES
+    -> (201, 'Website Redesign', 102), (202, 'Mobile Banking App', 103), (203, 'Marketing Campaign', 104),
+    -> (204, 'Payroll System', 106), (205, 'Backend Optimization', 107), (206, 'Cloud Migration', 102),
+    -> (207, 'Customer Analytics', 110), (208, 'Inventory System', NULL);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> select * from employees;
++--------+----------+---------+-------------------+----------+------------+
+| emp_id | emp_name | dept_id | designation       | salary   | join_date  |
++--------+----------+---------+-------------------+----------+------------+
+|      1 | Rahul    |       1 | Software Engineer | 55000.00 | 2021-06-15 |
+|      2 | Anita    |       2 | HR Executive      | 38000.00 | 2020-03-21 |
+|      3 | Suresh   |       4 | Sales Manager     | 52000.00 | 2019-08-10 |
+|      4 | Priya    |       1 | Team Lead         | 65000.00 | 2022-01-05 |
+|      5 | Kiran    |       3 | Finance Analyst   | 48000.00 | 2018-12-11 |
+|      6 | Deepika  |       2 | HR Manager        | 60000.00 | 2019-10-19 |
++--------+----------+---------+-------------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> show tables;
++------------------------------+
+| Tables_in_jfs2               |
++------------------------------+
+| departments                  |
+| employees                    |
+| projects                     |
+| vw_department_salary_summary |
+| vw_employee_annual_salary    |
+| vw_employee_department       |
+| vw_high_paying_departments   |
++------------------------------+
+7 rows in set (0.01 sec)
+
+mysql> drop table employees;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     department_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Employees (emp_id, name, department_id, salary) VALUES
+    -> (101, 'Arjun', 1, 50000), (102, 'Bhavana', 2, 65000), (103, 'Charan', 2, 72000),
+    -> (104, 'Divya', 3, 45000), (105, 'Eswar', NULL, 40000), (106, 'Farhan', 4, 55000),
+    -> (107, 'Gowri', 2, 62000), (108, 'Harish', 5, 48000), (109, 'Ishita', NULL, 53000),
+    -> (110, 'Jagan', 3, 60000);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from departments;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | IT        | Hyderabad |
+|       2 | HR        | Bangalore |
+|       3 | Finance   | Chennai   |
+|       4 | Sales     | Mumbai    |
++---------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> -- get all employees with their department names.
+mysql> select e.emp_id,e.name,d.department_name
+    -> FROM Employees e
+    -> INNER JOIN Departments d ON e.department_id = d.department_id;
+ERROR 1054 (42S22): Unknown column 'd.department_name' in 'field list'
+mysql> select e.emp_id,e.name,d.dept_name
+    -> FROM Employees e
+    -> INNER JOIN Departments d ON e.dept_id = d.dept_id;
+ERROR 1054 (42S22): Unknown column 'e.dept_id' in 'on clause'
+mysql> SELECT e.emp_id, e.name, d.department_name
+    -> FROM Employees e
+    -> INNER JOIN Departments d ON e.department_id = d.department_id;
+ERROR 1054 (42S22): Unknown column 'd.department_name' in 'field list'
+mysql> Terminal close -- exit!
+mysql> show tables;
+ERROR 1046 (3D000): No database selected
+mysql> use pfs2;
+ERROR 1049 (42000): Unknown database 'pfs2'
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| instagram_clone_db |
+| jfs2               |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+7 rows in set (0.03 sec)
+
+mysql> use pfs3;
+Database changed
+mysql> show tables
+    -> ^C
+mysql> show tables;
++----------------+
+| Tables_in_pfs3 |
++----------------+
+| tab1           |
+| tab2           |
++----------------+
+2 rows in set (0.01 sec)
+
+mysql> drop database pfs3;
+Query OK, 2 rows affected (0.10 sec)
+
+mysql> drop database PFS3;
+ERROR 1008 (HY000): Can't drop database 'pfs3'; database doesn't exist
+mysql> CREATE DATBASE PFS3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATBASE PFS3' at line 1
+mysql> create database pfs3;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> drop database PFS3;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create database pfs3;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use pfs3;
+Database changed
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     department_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>  
+mysql> CREATE TABLE Departments (
+    ->     department_id INT PRIMARY KEY,
+    ->     department_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>  
+mysql> CREATE TABLE Projects (
+    ->     project_id INT PRIMARY KEY,
+    ->     project_name VARCHAR(100),
+    ->     emp_id INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>  
+mysql> INSERT INTO Departments (department_id, department_name) VALUES
+    -> (1, 'Human Resources'), (2, 'Engineering'), (3, 'Marketing'), (4, 'Finance'), (5, 'Operations');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> INSERT INTO Employees (emp_id, name, department_id, salary) VALUES
+    -> (101, 'Arjun', 1, 50000), (102, 'Bhavana', 2, 65000), (103, 'Charan', 2, 72000),
+    -> (104, 'Divya', 3, 45000), (105, 'Eswar', NULL, 40000), (106, 'Farhan', 4, 55000),
+    -> (107, 'Gowri', 2, 62000), (108, 'Harish', 5, 48000), (109, 'Ishita', NULL, 53000),
+    -> (110, 'Jagan', 3, 60000);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> INSERT INTO Projects (project_id, project_name, emp_id) VALUES
+    -> (201, 'Website Redesign', 102), (202, 'Mobile Banking App', 103), (203, 'Marketing Campaign', 104),
+    -> (204, 'Payroll System', 106), (205, 'Backend Optimization', 107), (206, 'Cloud Migration', 102),
+    -> (207, 'Customer Analytics', 110), (208, 'Inventory System', NULL);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from departments;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             1 | Human Resources |
+|             2 | Engineering     |
+|             3 | Marketing       |
+|             4 | Finance         |
+|             5 | Operations      |
++---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select e.emp_id,
+    -> e.name,d.department_name
+    -> from employees e
+    -> ^C
+mysql> select e.emp_id,
+    -> e,name,d.department_name
+    -> from employees e
+    -> inner join departments d
+    -> on e.department_id = d.department_id;
+ERROR 1054 (42S22): Unknown column 'e' in 'field list'
+mysql> select e.emp_id,
+    -> e.name,d.department_name
+    -> from employees e
+    -> inner join departments d
+    -> on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> select e.emp_id,
+    -> e,name,d.department_name
+    -> from employees e
+    -> inner join projects p
+    -> on emp_id = p.project_id;
+ERROR 1054 (42S22): Unknown column 'e' in 'field list'
+mysql> select e.emp_id,
+    -> e.name,d.department_name
+    -> from employees e
+    -> inner join projects p
+    -> on emp_id = p.project_id;
+ERROR 1054 (42S22): Unknown column 'd.department_name' in 'field list'
+mysql> select e.name,p.project_name
+    -> from employees
+    -> inner join
+    -> on emp_id = p.emp_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on emp_id = p.emp_id' at line 4
+mysql> select e.name,p.project_name
+    -> from employees
+    -> inner join
+    -> ^C
+mysql> select e.name,p.project_name
+    -> from employees
+    -> inner join projects p
+    -> on e.emp_id = p.emp_id;
+ERROR 1054 (42S22): Unknown column 'e.name' in 'field list'
+mysql> SELECT e.name, p.project_name
+    -> FROM employees e
+    -> INNER JOIN projects p
+    -> ON e.emp_id = p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Bhavana | Cloud Migration      |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+7 rows in set (0.00 sec)
+
+mysql> select e.emp_id,
+    -> e.name,d.department_name
+    -> from employees e
+    -> left join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    105 | Eswar   | NULL            |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    109 | Ishita  | NULL            |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from deparments;
+ERROR 1146 (42S02): Table 'pfs3.deparments' doesn't exist
+mysql> select * from departments;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             1 | Human Resources |
+|             2 | Engineering     |
+|             3 | Marketing       |
+|             4 | Finance         |
+|             5 | Operations      |
++---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select e.emp_id,
+    -> e.name,d.department_name
+    -> FROM employees e
+    -> right join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    107 | Gowri   | Engineering     |
+|    103 | Charan  | Engineering     |
+|    102 | Bhavana | Engineering     |
+|    110 | Jagan   | Marketing       |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    108 | Harish  | Operations      |
++--------+---------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> select e.name,
+    -> p.project_name
+    -> from employees e
+    -> left join projects on e.emp_id = p.emp_id;
+ERROR 1054 (42S22): Unknown column 'p.project_name' in 'field list'
+mysql> select e.name,p.project_name
+    -> ^C
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> left join projects on e.emp_id = p.emp_id;
+ERROR 1054 (42S22): Unknown column 'p.project_name' in 'field list'
+mysql> select e.name,
+    -> p.project_name
+    -> from employees e
+    -> left join projects p on e.emp_id = p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Arjun   | NULL                 |
+| Bhavana | Cloud Migration      |
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Eswar   | NULL                 |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Harish  | NULL                 |
+| Ishita  | NULL                 |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+11 rows in set (0.00 sec)
+
+mysql> select d.department_name,
+    -> e.name
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select d.department_name,
+    -> e.name
+    -> from departments d
+    -> right join departments d on e.department_id = d.department_id;
+ERROR 1066 (42000): Not unique table/alias: 'd'
+mysql> select d.department_name,
+    -> e.name
+    -> from employees e
+    -> right join departments d on e.department_id = d.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select p.project_name,e.name
+    -> from employees e
+    -> right join projects p on e.emp_id = p.emp_id;
++----------------------+---------+
+| project_name         | name    |
++----------------------+---------+
+| Website Redesign     | Bhavana |
+| Mobile Banking App   | Charan  |
+| Marketing Campaign   | Divya   |
+| Payroll System       | Farhan  |
+| Backend Optimization | Gowri   |
+| Cloud Migration      | Bhavana |
+| Customer Analytics   | Jagan   |
+| Inventory System     | NULL    |
++----------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select e.name,d.department_name
+    -> from departments d
+    -> right join employees e on d.emp_id = e.department_id;
+ERROR 1054 (42S22): Unknown column 'd.emp_id' in 'on clause'
+mysql> select e.name,d.department_name
+    -> from departments d
+    -> right join employees e on d.department_id = e.emp_id;
++---------+-----------------+
+| name    | department_name |
++---------+-----------------+
+| Arjun   | NULL            |
+| Bhavana | NULL            |
+| Charan  | NULL            |
+| Divya   | NULL            |
+| Eswar   | NULL            |
+| Farhan  | NULL            |
+| Gowri   | NULL            |
+| Harish  | NULL            |
+| Ishita  | NULL            |
+| Jagan   | NULL            |
++---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> Terminal close -- exit!
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| instagram_clone_db |
+| jfs2               |
+| mysql              |
+| performance_schema |
+| pfs3               |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use pf3;
+ERROR 1049 (42000): Unknown database 'pf3'
+mysql> use pfs3;
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_pfs3 |
++----------------+
+| departments    |
+| employees      |
+| projects       |
++----------------+
+3 rows in set (0.01 sec)
+
+mysql> selecr e.emp_id,e.name,d.department_name
+    -> from employees e
+    -> inner join departments d ON e.department_id=d.department_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selecr e.emp_id,e.name,d.department_name
+from employees e
+inner join departments' at line 1
+mysql> select e.emp_id,e.name,d.department_name
+    -> from employees e
+    -> inner join departments d ON e.department_id=d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> select distinct e.emp_id,e.name
+    -> from employees e
+    -> inner join projects p on e.emp_id = p.emp_id;
++--------+---------+
+| emp_id | name    |
++--------+---------+
+|    102 | Bhavana |
+|    103 | Charan  |
+|    104 | Divya   |
+|    106 | Farhan  |
+|    107 | Gowri   |
+|    110 | Jagan   |
++--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select e.nmae,p.project_name
+    -> from employees e
+    -> inner join projects p on e.emp_id = p.emp_id;
+ERROR 1054 (42S22): Unknown column 'e.nmae' in 'field list'
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> inner join projects p on e.emp_id = p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Bhavana | Cloud Migration      |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+7 rows in set (0.00 sec)
+
+mysql> select e.emp_id,e.name,d.department_name
+    -> from employees e
+    -> left join departments d on e.departmnet_id = d.department_id;
+ERROR 1054 (42S22): Unknown column 'e.departmnet_id' in 'on clause'
+mysql> select e.emp_id,e.name,d.department_name
+    -> from employees e
+    -> left join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    105 | Eswar   | NULL            |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    109 | Ishita  | NULL            |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> left join projects p on e.emp_id=p.project_id;
++---------+--------------+
+| name    | project_name |
++---------+--------------+
+| Arjun   | NULL         |
+| Bhavana | NULL         |
+| Charan  | NULL         |
+| Divya   | NULL         |
+| Eswar   | NULL         |
+| Farhan  | NULL         |
+| Gowri   | NULL         |
+| Harish  | NULL         |
+| Ishita  | NULL         |
+| Jagan   | NULL         |
++---------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> left join projects p on e.emp_id=p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Arjun   | NULL                 |
+| Bhavana | Cloud Migration      |
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Eswar   | NULL                 |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Harish  | NULL                 |
+| Ishita  | NULL                 |
+| Jagan   | Customer Analytics   |
++---------+----------------------+
+11 rows in set (0.00 sec)
+
+mysql> select d.department_name,e.name
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select * from departemnts;
+ERROR 1146 (42S02): Table 'pfs3.departemnts' doesn't exist
+mysql> select * from departments;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             1 | Human Resources |
+|             2 | Engineering     |
+|             3 | Marketing       |
+|             4 | Finance         |
+|             5 | Operations      |
++---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> select d.department_name,e.name
+    -> from departments d
+    -> right join employees  e on d.department_id = e.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Bhavana |
+| Engineering     | Charan  |
+| Marketing       | Divya   |
+| NULL            | Eswar   |
+| Finance         | Farhan  |
+| Engineering     | Gowri   |
+| Operations      | Harish  |
+| NULL            | Ishita  |
+| Marketing       | Jagan   |
++-----------------+---------+
+10 rows in set (0.01 sec)
+
+mysql> select d.department_name,e.name
+    -> from employees e
+    -> right join departments d on e.department_id = d.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
++-----------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select p.project_name,e.name
+    -> from employees e
+    -> right join projects p on e.emp_id = p.emp_id;
++----------------------+---------+
+| project_name         | name    |
++----------------------+---------+
+| Website Redesign     | Bhavana |
+| Mobile Banking App   | Charan  |
+| Marketing Campaign   | Divya   |
+| Payroll System       | Farhan  |
+| Backend Optimization | Gowri   |
+| Cloud Migration      | Bhavana |
+| Customer Analytics   | Jagan   |
+| Inventory System     | NULL    |
++----------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select e.name,d.department_name
+    -> from employees e
+    -> ^C
+mysql> select e.name,d.department_name
+    -> from departments d
+    -> right join employees e on d.department_id = e.department_id;
++---------+-----------------+
+| name    | department_name |
++---------+-----------------+
+| Arjun   | Human Resources |
+| Bhavana | Engineering     |
+| Charan  | Engineering     |
+| Divya   | Marketing       |
+| Eswar   | NULL            |
+| Farhan  | Finance         |
+| Gowri   | Engineering     |
+| Harish  | Operations      |
+| Ishita  | NULL            |
+| Jagan   | Marketing       |
++---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.name ,d.department_name 
+    -> from employees e
+    -> left join departments  d on e.department_id = d.department_id
+    -> Union
+    -> select e.name ,d.department_name
+    -> from employees e
+    -> right join departments  d on e.department_id = d.department_id;
++---------+-----------------+
+| name    | department_name |
++---------+-----------------+
+| Arjun   | Human Resources |
+| Bhavana | Engineering     |
+| Charan  | Engineering     |
+| Divya   | Marketing       |
+| Eswar   | NULL            |
+| Farhan  | Finance         |
+| Gowri   | Engineering     |
+| Harish  | Operations      |
+| Ishita  | NULL            |
+| Jagan   | Marketing       |
++---------+-----------------+
+10 rows in set (0.01 sec)
+
+mysql> select e.name,p.project_name
+    -> from employees e
+    -> left join projects p on e.emp_id = p.emp_id
+    -> Union
+    -> select e.name,p.project_name
+    -> from employees e
+    -> right join projects p on e.emp_id = p.emp_id;
++---------+----------------------+
+| name    | project_name         |
++---------+----------------------+
+| Arjun   | NULL                 |
+| Bhavana | Cloud Migration      |
+| Bhavana | Website Redesign     |
+| Charan  | Mobile Banking App   |
+| Divya   | Marketing Campaign   |
+| Eswar   | NULL                 |
+| Farhan  | Payroll System       |
+| Gowri   | Backend Optimization |
+| Harish  | NULL                 |
+| Ishita  | NULL                 |
+| Jagan   | Customer Analytics   |
+| NULL    | Inventory System     |
++---------+----------------------+
+12 rows in set (0.01 sec)
+
+mysql> select d.department_name ,e.name
+    -> from employees e
+    -> left join departments d on d.department_id = e.department_id
+    -> union
+    -> select d.department_name ,e.name
+    -> ^C
+mysql> select d.department_name ,e.name
+    -> from departments d
+    -> left join departments d on d.department_id = e.department_id
+    -> Union
+    -> select d.department_name ,e.name
+    -> from departments d
+    -> right join departments d on d.department_id = e.department_id
+    -> ^C
+mysql> select d.department_name ,e.name
+    -> from departments d
+    -> left join departments d on d.department_id = e.department_id
+    -> Union
+    -> select d.department_name ,e.name
+    -> from departments d
+    -> right join departments d on d.department_id = e.department_id
+    -> ;
+ERROR 1066 (42000): Not unique table/alias: 'd'
+mysql> select d.department_name ,e.name
+    -> from departments d
+    -> left join departments d on d.department_id = e.department_id
+    -> Union
+    -> select d.department_name ,e.name
+    -> from departments d
+    -> right join departments d on d.department_id = e.department_id;
+ERROR 1066 (42000): Not unique table/alias: 'd'
+mysql> select d.department_name ,e.name
+    -> from departments d
+    -> left join employees e on d.department_id = e.department_id
+    -> union
+    -> select d.department_name ,e.name
+    -> from departments d
+    -> right join employees e on d.department_id = e.department_id;
++-----------------+---------+
+| department_name | name    |
++-----------------+---------+
+| Human Resources | Arjun   |
+| Engineering     | Gowri   |
+| Engineering     | Charan  |
+| Engineering     | Bhavana |
+| Marketing       | Jagan   |
+| Marketing       | Divya   |
+| Finance         | Farhan  |
+| Operations      | Harish  |
+| NULL            | Eswar   |
+| NULL            | Ishita  |
++-----------------+---------+
+10 rows in set (0.01 sec)
+
+mysql> Terminal close -- exit!
